@@ -1,11 +1,13 @@
 name: Release
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
   workflow_dispatch:
   release:
     types: [created]
 jobs:
   build-assets:
+    name: Build assets
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
@@ -13,7 +15,6 @@ jobs:
             target: x86_64-pc-windows-msvc
           - os: macos-latest
             target: x86_64-apple-darwin
-    name: Build assets
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository code
@@ -23,8 +24,6 @@ jobs:
           deno-version: v2.x
       - run: |
           deno install --allow-scripts
-      - if: ${{ matrix.os == 'windows-latest' }}
-        run: |
           deno compile --allow-net --allow-ffi --allow-env --target ${{ matrix.target }} --output dist/cash-drawer-middleware-${{ matrix.target }} server.js
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
