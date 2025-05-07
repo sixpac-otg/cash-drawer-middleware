@@ -31,4 +31,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
-          files: dist/cash-drawer-middleware-${{ matrix.target }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          files: dist/cash-drawer-middleware-${{ matrix.target }}${{ matrix.target == 'x86_64-pc-windows-msvc' && '.exe' || '' }}
